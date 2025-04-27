@@ -9,20 +9,21 @@ namespace AdopcionPET.Models
     public class Mascota
     {
     [Key]
-    public int MascotaId { get; set; }
+        public int MascotaId { get; set; }
 
-    [Required(ErrorMessage = "El nombre es obligatorio.")]
-    public string Nombre { get; set; }
+        [Required]
+        public string Nombre { get; set; }
 
-    [Range(0, 100, ErrorMessage = "La edad debe ser positiva.")]
-    public int Edad { get; set; }
+        [Required]
+        public int Edad { get; set; }
 
-    [Required(ErrorMessage = "El tipo de mascota es obligatorio.")]
-    public string Tipo { get; set; }
+        [Required]
+        public string Tipo { get; set; }
 
-    [Required]
-    public string EstadoAdopcion { get; set; } // Disponible o Adoptada
+        [Required]
+        public string EstadoAdopcion { get; set; }
 
-    public Adopcion Adopcion { get; set; } // Relación 1 a 1
+        // 🔥 AGREGAR ESTA LÍNEA
+        public Adopcion Adopcion { get; set; }
     }
 }
