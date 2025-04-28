@@ -25,31 +25,26 @@ namespace AdopcionPET.Controllers
 
         // POST: Mascotas/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Mascota mascota)
+[ValidateAntiForgeryToken]
+public IActionResult Create([Bind("Nombre,Edad,Tipo,EstadoAdopcion")] Mascota mascota)
+{
+    if (!ModelState.IsValid)
+    {
+        foreach (var error in ModelState)
         {
-            if (ModelState.IsValid)
+            if (error.Value.Errors.Count > 0)
             {
-                try
-                {
-                    _context.Mascotas.Add(mascota);
-                    _context.SaveChanges();
-                    TempData["SuccessMessage"] = "🐾 ¡Mascota registrada exitosamente!";
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"Error al guardar la mascota: {ex.Message}");
-                    ModelState.AddModelError(string.Empty, "Ocurrió un error al guardar la mascota. Inténtalo de nuevo.");
-                }
+                Console.WriteLine($"Error en el campo {error.Key}: {error.Value.Errors[0].ErrorMessage}");
             }
-            else
-            {
-                _logger.LogWarning("⚠️ ModelState inválido al intentar registrar una mascota.");
-            }
-
-            return View(mascota);
         }
+        return View(mascota);
+    }
+
+    _context.Mascotas.Add(mascota);
+    _context.SaveChanges();
+    TempData["SuccessMessage"] = "🐾 ¡Mascota registrada exitosamente!";
+    return RedirectToAction(nameof(Index));
+}
 
         // GET: Mascotas
         public IActionResult Index()
