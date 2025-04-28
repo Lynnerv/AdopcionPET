@@ -1,8 +1,8 @@
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AdopcionPET.Data;
 using AdopcionPET.Models;
+using System;
 
 namespace AdopcionPET.Controllers
 {
@@ -30,10 +30,24 @@ namespace AdopcionPET.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Mascotas.Add(mascota);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Mascotas.Add(mascota);
+                    _context.SaveChanges();
+                    TempData["SuccessMessage"] = "🐾 ¡Mascota registrada exitosamente!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error al guardar la mascota: {ex.Message}");
+                    ModelState.AddModelError(string.Empty, "Ocurrió un error al guardar la mascota. Inténtalo de nuevo.");
+                }
             }
+            else
+            {
+                _logger.LogWarning("⚠️ ModelState inválido al intentar registrar una mascota.");
+            }
+
             return View(mascota);
         }
 
@@ -41,10 +55,10 @@ namespace AdopcionPET.Controllers
         public IActionResult Index()
         {
             var mascotas = _context.Mascotas.ToList();
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
             return View(mascotas);
         }
 
-        // (Opcional) Acción de Error
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

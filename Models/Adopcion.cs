@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AdopcionPET.Models
 {
@@ -12,11 +7,11 @@ namespace AdopcionPET.Models
         [Key]
         public int AdopcionId { get; set; }
 
-        [ForeignKey("Mascota")]
+        [Required]
         public int MascotaId { get; set; }
         public Mascota Mascota { get; set; }
 
-        [ForeignKey("Adoptante")]
+        [Required]
         public int AdoptanteId { get; set; }
         public Adoptante Adoptante { get; set; }
 
