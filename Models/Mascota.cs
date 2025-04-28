@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AdopcionPET.Models
 {
     public class Mascota
     {
-    [Key]
+        [Key]
         public int MascotaId { get; set; }
 
         [Required]
@@ -23,7 +19,6 @@ namespace AdopcionPET.Models
         [Required]
         public string EstadoAdopcion { get; set; }
 
-        // 🔥 AGREGAR ESTA LÍNEA
         public Adopcion Adopcion { get; set; }
     }
 }
